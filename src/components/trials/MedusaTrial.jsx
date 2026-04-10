@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import {
   btnGold,
   inputStyle,
@@ -17,6 +17,13 @@ export default function MedusaTrial() {
   const [formData, setFormData] = useState({ name: "", email: "", role: "" });
   const [completed, setCompleted] = useState(false);
   const formRef = useRef(null);
+  const srLogRef = useRef(null);
+
+  useEffect(() => {
+    const el = srLogRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, [srLog]);
 
   const announce = useCallback((msg) => {
     setSrLog((prev) => [...prev, msg]);
@@ -35,6 +42,12 @@ export default function MedusaTrial() {
       announce(`${el.textContent}, button`);
     }
   };
+
+  const handleTextChange = (e) => {
+    const el = e.target;
+    const label = el.getAttribute("data-sr-label") || "unlabeled input";
+    announce(`${el.value}`);
+  }
 
   const handleSubmit = () => {
     if (formData.name && formData.email && formData.role) {
@@ -104,31 +117,37 @@ export default function MedusaTrial() {
                   display: "flex",
                   flexDirection: "column",
                   gap: 16,
+                  userSelect: "none",
+                  pointerEvents: "none",
                 }}
               >
+                <div style={{position: "absolute", top: 0, left: 0, borderRadius: 12, width: "100%", height: "100%", backgroundColor: "#000"}}></div>
                 <p
                   style={{
                     color: "#333",
                     fontSize: 12,
                     textAlign: "center",
                     marginBottom: 8,
+                    zIndex: 1,
                   }}
                 >
-                  [The form is here — but you can't see it. Use Tab and listen
-                  to the screen reader.]
+                  [The form is here — but you can't see it.
+                  Use Tab and pay attention to the screen reader.]
                 </p>
                 <input
                   data-sr-label="Full name"
                   value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
+                  onChange={(e) => {
+                    handleTextChange(e);
+                    setFormData({ ...formData, name: e.target.value });
+                  }}
                   style={{
                     ...inputStyle,
                     color: "#000",
                     caretColor: "#000",
                     background: "#000",
                     border: "1px solid #000",
+                    userSelect: "none",
                   }}
                   onFocus={(e) => {
                     e.target.style.outline = "2px solid #D4A857";
@@ -142,9 +161,10 @@ export default function MedusaTrial() {
                   data-sr-label="Email address"
                   type="email"
                   value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
+                  onChange={(e) => {
+                    handleTextChange(e);
+                    setFormData({ ...formData, email: e.target.value });
+                  }}
                   style={{
                     ...inputStyle,
                     color: "#000",
@@ -214,6 +234,7 @@ export default function MedusaTrial() {
 
           {/* Screen reader output */}
           <div
+            ref={srLogRef}
             style={{
               width: 280,
               background: "rgba(212,168,87,0.08)",

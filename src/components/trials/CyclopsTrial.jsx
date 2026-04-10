@@ -37,7 +37,7 @@ export default function CyclopsTrial() {
 
   if (phase === "trial")
     return (
-      <div style={{ maxWidth: 800, margin: "0 auto" }}>
+      <div style={{ maxWidth: 800, margin: "0 auto"}}>
         {/* The low contrast nightmare */}
         <div
           style={{
@@ -45,6 +45,7 @@ export default function CyclopsTrial() {
             borderRadius: 12,
             padding: 32,
             marginBottom: 24,
+            filter: submitted ? "none" : "grayscale(100%)",
           }}
         >
           <h3 style={{ color: "#e0e0e0", fontSize: 22, marginBottom: 16 }}>
@@ -121,7 +122,7 @@ export default function CyclopsTrial() {
                   background: "#faf0f0",
                 }}
               >
-                john@
+                john@email.com
               </div>
             </div>
             <div>
@@ -136,7 +137,7 @@ export default function CyclopsTrial() {
                   background: "#faf0f0",
                 }}
               >
-                555-123
+                555-4567
               </div>
             </div>
           </div>
@@ -144,8 +145,8 @@ export default function CyclopsTrial() {
           {/* Link hidden in text */}
           <p style={{ color: "#ddd", fontSize: 14, lineHeight: 1.6 }}>
             To update your preferences, go to{" "}
-            <span style={{ color: "#c8c8e0" }}>account settings</span> or
-            contact <span style={{ color: "#c8c8e0" }}>support</span> for help.
+            <span style={{ color: "#ddd6e8" }}>account settings</span> or
+            contact <span style={{ color: "#ded9e6" }}>support</span> for help.
           </p>
         </div>
 

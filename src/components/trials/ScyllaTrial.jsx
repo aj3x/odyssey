@@ -19,9 +19,10 @@ export default function ScyllaTrial() {
   const [tasksDone, setTasksDone] = useState({
     task1: false,
     task2: false,
-    task3: false,
+    task3: 0,
   });
   const trapRef = useRef(null);
+  const task3Ref = useRef(null);
 
   const handleTrapKeyDown = (e) => {
     if (e.key === "Tab" && !e.shiftKey) {
@@ -36,11 +37,12 @@ export default function ScyllaTrial() {
       }
     }
     if (e.key === "Escape") {
+      task3Ref.current?.focus();
       setEscaped(true);
     }
   };
 
-  const allDone = tasksDone.task1 && tasksDone.task2 && tasksDone.task3;
+  const allDone = tasksDone.task1 && tasksDone.task2 && !!tasksDone.task3;
 
   if (phase === "intro")
     return (
@@ -225,14 +227,15 @@ export default function ScyllaTrial() {
             {[1, 2, 3, 4, 5].map((n) => (
               <button
                 key={n}
-                onClick={() => setTasksDone((d) => ({ ...d, task3: true }))}
+                ref={n === 1 ? task3Ref : null}
+                onClick={() => setTasksDone((d) => ({ ...d, task3: n }))}
                 style={{
                   width: 44,
                   height: 44,
                   borderRadius: 8,
                   border: "1px solid #444",
                   background:
-                    tasksDone.task3 && n <= 4
+                    tasksDone.task3 >= n
                       ? "rgba(212,168,87,0.2)"
                       : "rgba(255,255,255,0.03)",
                   color: "#D4A857",
