@@ -12,39 +12,53 @@ import {
   trialSection,
 } from "../../styles/sharedStyles";
 
+const videoSrc = "/assets/hedge.mov";
+const caption = "A hedge is a hedge. He only chopped it down because it spoiled his view. What's [Reaper] moaning about.";
+const videoSections = [
+  "0,12",
+  "12,20",
+  "20,36",
+];
+const sectionLabels = [
+  "Person 1 of 3 — hardest to understand",
+  "Person 2 of 3 — a little clearer",
+  "Person 3 of 3 — clearest",
+];
+
 export default function SirensTrial() {
-  const [phase, setPhase] = useState("intro"); // intro | playing | reveal
-  const [answers, setAnswers] = useState({ q1: "", q2: "", q3: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [phase, setPhase] = useState("intro");
+  const [currentAnswer, setCurrentAnswer] = useState("");
+  const [videoSection, setVideoSection] = useState(0);
+  const [sectionSubmitted, setSectionSubmitted] = useState(false);
 
-  const correct = { q1: "3", q2: "friday", q3: "sarah" };
+  const isLastSection = videoSection === videoSections.length - 1;
 
-  const handleSubmit = () => setSubmitted(true);
+  const handleSubmit = () => setSectionSubmitted(true);
 
-  const score = submitted
-    ? Object.keys(correct).filter(
-        (k) => answers[k].toLowerCase().trim() === correct[k]
-      ).length
-    : 0;
+  const handleNextSection = () => {
+    setVideoSection((v) => v + 1);
+    setSectionSubmitted(false);
+    // currentAnswer intentionally kept so user can refine it
+  };
 
   if (phase === "intro")
     return (
       <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ fontSize: 64, marginBottom: 16 }}>🔇</div>
+        <div style={{ fontSize: 64, marginBottom: 16 }}>👂</div>
         <h2 style={headingStyle}>The Sirens</h2>
         <p style={subtitleStyle}>
-          The Sirens' song carries critical information — but you cannot hear it.
+          Three people will each say the same thing.
           <br />
-          A video will play with important details about a team meeting.
+          The first is the hardest to understand. Each one is a little clearer.
           <br />
-          <strong style={accentText}>
-            The audio is muted. There are no captions.
-          </strong>
+          After each person speaks,{" "}
+          <strong style={accentText}>type what you think they said</strong> and
+          submit.
           <br />
-          Afterward, you'll be quizzed on what was said.
+          You can update your answer as you hear each version.
         </p>
         <button onClick={() => setPhase("playing")} style={btnGold}>
-          Play the Video
+          Begin
         </button>
       </div>
     );
@@ -56,154 +70,148 @@ export default function SirensTrial() {
           style={{
             background: "#000",
             borderRadius: 12,
-            padding: 40,
+            padding: 24,
             textAlign: "center",
             marginBottom: 24,
             border: "1px solid #333",
-            minHeight: 280,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
           }}
         >
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🔇</div>
           <div
             style={{
-              color: "#555",
-              fontFamily: "monospace",
-              fontSize: 14,
+              color: "#888",
+              fontSize: 13,
               marginBottom: 12,
+              fontFamily: "monospace",
+              letterSpacing: 0.5,
             }}
           >
-            ▶ NOW PLAYING — Team Standup Recording (0:47)
+            {sectionLabels[videoSection]}
           </div>
-          <div style={{ color: "#333", fontSize: 13 }}>
-            [A person is speaking animatedly. They point at a screen showing
-            charts.
-            <br />
-            Another person nods and holds up fingers. A third person writes on a
-            whiteboard.
-            <br />
-            Everyone laughs. The speaker gestures toward a calendar on the wall.]
-          </div>
-          <div
-            style={{
-              marginTop: 20,
-              background: "#111",
-              height: 4,
-              borderRadius: 2,
-              width: "80%",
-              position: "relative",
-            }}
-          >
-            <div
-              style={{
-                background: "#D4A857",
-                height: 4,
-                borderRadius: 2,
-                width: "100%",
-                animation: "progress 5s linear forwards",
-              }}
-            />
-          </div>
-          <style>{`@keyframes progress { from { width: 0% } to { width: 100% } }`}</style>
+          <video
+            key={videoSection}
+            src={`${videoSrc}#t=${videoSections[videoSection]}`}
+            autoPlay
+            style={{ borderRadius: 8, height: 280, maxWidth: "100%" }}
+          />
         </div>
-        <p
-          style={{
-            color: "#b0a89a",
-            textAlign: "center",
-            fontSize: 15,
-            marginBottom: 24,
-          }}
-        >
-          The video has ended. Based on what you saw, answer these questions:
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <form style={{ display: "flex", flexDirection: "column", gap: 16 }} onSubmit={handleSubmit}>
           <label style={labelStyle}>
-            How many action items were assigned?
+            What do you think they said?
             <input
-              type="text"
-              value={answers.q1}
-              onChange={(e) => setAnswers({ ...answers, q1: e.target.value })}
-              style={inputStyle}
-              placeholder="Your answer..."
-            />
-          </label>
-          <label style={labelStyle}>
-            What day is the deadline?
-            <input
-              type="text"
-              value={answers.q2}
-              onChange={(e) => setAnswers({ ...answers, q2: e.target.value })}
-              style={inputStyle}
-              placeholder="Your answer..."
-            />
-          </label>
-          <label style={labelStyle}>
-            Who volunteered to lead the next sprint?
-            <input
-              type="text"
-              value={answers.q3}
-              onChange={(e) => setAnswers({ ...answers, q3: e.target.value })}
-              style={inputStyle}
-              placeholder="Your answer..."
-            />
-          </label>
-          {!submitted ? (
-            <button onClick={handleSubmit} style={btnGold}>
-              Submit Answers
-            </button>
-          ) : (
-            <div
+              value={currentAnswer}
+              onChange={(e) => setCurrentAnswer(e.target.value)}
+              disabled={sectionSubmitted}
+              placeholder="Type what you heard..."
               style={{
-                background: "rgba(212,168,87,0.1)",
-                border: "1px solid #D4A857",
-                borderRadius: 8,
-                padding: 20,
+                ...inputStyle,
+                resize: "vertical",
+                minHeight: 40,
+                fontFamily: "inherit",
+                opacity: sectionSubmitted ? 0.6 : 1,
               }}
+            />
+            <input type="submit" disabled style={{ display: "none" }} />
+          </label>
+          {!sectionSubmitted ? (
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              style={{
+                ...btnGold,
+                opacity: currentAnswer.trim() ? 1 : 0.5,
+                cursor: currentAnswer.trim() ? "pointer" : "not-allowed",
+              }}
+              disabled={!currentAnswer.trim()}
             >
-              <p
-                style={{
-                  color: "#D4A857",
-                  fontFamily: "'Cinzel', serif",
-                  fontSize: 18,
-                  marginBottom: 8,
-                }}
+              Submit
+            </button>
+          ) : isLastSection ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div
+                style={{ color: "#b0a89a", fontSize: 14, textAlign: "center" }}
               >
-                You got {score} out of 3 correct.
-              </p>
-              <p style={{ color: "#b0a89a", fontSize: 14, lineHeight: 1.6 }}>
-                The answers were: <strong>3 action items</strong>,{" "}
-                <strong>Friday</strong>, and <strong>Sarah</strong>.
-              </p>
-              <p
-                style={{
-                  color: "#e8dfd0",
-                  fontSize: 14,
-                  lineHeight: 1.6,
-                  marginTop: 12,
-                }}
-              >
-                Without captions or a transcript, the video was useless. This is
-                what <strong>466 million people</strong> with hearing loss
-                experience — and anyone in a noisy room, or watching without
-                headphones.
-              </p>
+                That was the final version.
+              </div>
               <button
                 onClick={() => setPhase("reveal")}
-                style={{ ...btnGold, marginTop: 16 }}
+                style={{ ...btnGold, marginTop: 4 }}
               >
-                See the Lesson →
+                See What Was Said →
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div
+                style={{ color: "#b0a89a", fontSize: 14, textAlign: "center" }}
+              >
+                Answer recorded. Ready to hear the next version?
+              </div>
+              <button onClick={handleNextSection} style={btnGold}>
+                Play Next Version →
               </button>
             </div>
           )}
-        </div>
+        </form>
       </div>
     );
 
   return (
     <div style={{ maxWidth: 700, margin: "0 auto" }}>
+      <div
+        style={{
+          background: "rgba(212,168,87,0.08)",
+          border: "1px solid rgba(212,168,87,0.35)",
+          borderRadius: 10,
+          padding: 20,
+          marginBottom: 24,
+        }}
+      >
+        <p
+          style={{
+            color: "#D4A857",
+            fontFamily: "'Cinzel', serif",
+            fontSize: 16,
+            marginBottom: 8,
+          }}
+        >
+          What they said:
+        </p>
+        <p
+          style={{
+            color: "#e8dfd0",
+            fontSize: 15,
+            lineHeight: 1.7,
+            fontStyle: "italic",
+          }}
+        >
+          "{caption}"
+        </p>
+        {currentAnswer.trim() && (
+          <>
+            <p
+              style={{
+                color: "#D4A857",
+                fontFamily: "'Cinzel', serif",
+                fontSize: 16,
+                marginTop: 16,
+                marginBottom: 8,
+              }}
+            >
+              Your final answer:
+            </p>
+            <p
+              style={{
+                color: "#b0a89a",
+                fontSize: 15,
+                lineHeight: 1.7,
+                fontStyle: "italic",
+              }}
+            >
+              "{currentAnswer}"
+            </p>
+          </>
+        )}
+      </div>
       <h3
         style={{
           fontFamily: "'Cinzel', serif",
