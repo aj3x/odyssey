@@ -146,8 +146,8 @@ export default function CyclopsTrial() {
           {/* Link hidden in text */}
           <p style={{ color: "#ddd", fontSize: 14, lineHeight: 1.6 }}>
             To update your preferences, go to{" "}
-            <span style={{ color: "#ddd6e8" }}>account settings</span> or
-            contact <span style={{ color: "#ded9e6" }}>support</span> for help.
+            <span style={{ color: "#ddd6e8", cursor: submitted ? "pointer" : "default" }}>account settings</span> or
+            contact <span style={{ color: "#ded9e6", cursor: submitted ? "pointer" : "default" }}>support</span> for help.
           </p>
         </div>
 
