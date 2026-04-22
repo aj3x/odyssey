@@ -62,10 +62,10 @@ export default function CyclopsTrial() {
             }}
           >
             {[
-              { name: "API Migration", color: "#e8e8e8", dotColor: "#d4d4d4" },
-              { name: "Design System", color: "#e8e8e8", dotColor: "#c8dcc8" },
-              { name: "Auth Service", color: "#e8e8e8", dotColor: "#dcc8c8" },
-              { name: "Mobile App", color: "#e8e8e8", dotColor: "#dcdcc8" },
+              { name: "API Migration", color: "#e8e8e8", dotColor: "#d4d4d4", tag: "Pending" },
+              { name: "Design System", color: "#e8e8e8", dotColor: "#c8dcc8", tag: "On Track" },
+              { name: "Auth Service", color: "#e8e8e8", dotColor: "#dcc8c8", tag: "Delayed" },
+              { name: "Mobile App", color: "#e8e8e8", dotColor: "#dcdcc8", tag: "At Risk" },
             ].map((p) => (
               <div
                 key={p.name}
@@ -77,6 +77,7 @@ export default function CyclopsTrial() {
                   alignItems: "center",
                   gap: 8,
                 }}
+                title={submitted ? p.tag : ""}
               >
                 <div
                   style={{
@@ -86,7 +87,7 @@ export default function CyclopsTrial() {
                     background: p.dotColor,
                   }}
                 />
-                <span style={{ color: "#d0d0d0", fontSize: 14 }}>
+                <span style={{ color: "#d0d0d0", fontSize: 14, userSelect: "none" }}>
                   {p.name}
                 </span>
               </div>

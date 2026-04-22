@@ -47,9 +47,9 @@ export default function SirensTrial() {
         <div style={{ fontSize: 64, marginBottom: 16 }}>👂</div>
         <h2 style={headingStyle}>The Sirens</h2>
         <p style={subtitleStyle}>
-          Three people will each say the same thing.
+          Three people will say the same thing but not exactly the same.
           <br />
-          The first is the hardest to understand. Each one is a little clearer.
+          The first is the hardest to understand.
           <br />
           After each person speaks,{" "}
           <strong style={accentText}>type what you think they said</strong> and
@@ -176,6 +176,17 @@ export default function SirensTrial() {
         >
           What they said:
         </p>
+        <p
+          style={{
+            color: "#e8dfd0",
+            fontSize: 15,
+            lineHeight: 1.7,
+            fontStyle: "italic",
+          }}
+        >
+          "A hedge is a hedge innit. I only chopped it down cause I couldn't see the view no more, What's he moaning about."
+        </p>
+        or
         <p
           style={{
             color: "#e8dfd0",
