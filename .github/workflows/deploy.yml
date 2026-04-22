@@ -32,4 +32,6 @@ jobs:
         run: npm run predeploy
 
       - name: Deploy to GitHub Pages
-        run: npx gh-pages -d dist --repo=https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        run: npx gh-pages -d dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
