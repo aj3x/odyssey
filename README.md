@@ -33,12 +33,25 @@ npm run dev
 
 The app will open at `http://localhost:3000`
 
+
 ### Building for Production
 
 ```bash
 npm run build
 npm run preview
 ```
+
+### 🚀 Deploying to GitHub Pages
+
+1. Make sure your repository is pushed to GitHub (e.g., `https://github.com/<your-username>/odyssey`).
+2. Update the `base` in `vite.config.ghpages.js` if your repo name is not `odyssey`.
+3. Deploy with:
+
+```bash
+npm run deploy
+```
+
+Your app will be published to `https://<your-username>.github.io/odyssey/`.
 
 ## 📁 Project Structure
 
