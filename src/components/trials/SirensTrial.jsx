@@ -12,7 +12,7 @@ import {
   trialSection,
 } from "../../styles/sharedStyles";
 
-const videoSrc = "/assets/hedge.mov";
+const videoSrc = "video/hedge.mov";
 const caption = "A hedge is a hedge. He only chopped it down because it spoiled his view. What's [Reaper] moaning about.";
 const videoSections = [
   "0,12",
